@@ -4,9 +4,8 @@ import { useEffect, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { supabase } from "@/lib/supabase/client"
 import { Edit, Plus } from "lucide-react"
-import TemplateIcon from "@/components/icons/template-icon" // Declare the Template variable
+import TemplateIcon from "@/components/icons/template-icon"
 
 interface Template {
   id: string
@@ -33,14 +32,68 @@ export default function TemplateGrid({ organizationId, isAdmin }: TemplateGridPr
 
   const fetchTemplates = async () => {
     try {
-      const { data, error } = await supabase
-        .from("templates")
-        .select("*")
-        .eq("status", "active")
-        .order("created_at", { ascending: false })
+      // Simulate API delay
+      await new Promise((resolve) => setTimeout(resolve, 500))
 
-      if (error) throw error
-      setTemplates(data || [])
+      const mockTemplates: Template[] = [
+        {
+          id: "template-1",
+          name: "Event Announcement",
+          description: "Perfect for announcing upcoming events with customizable date, time, and location fields",
+          thumbnail_url: "/event-announcement-template.png",
+          status: "active",
+          created_at: new Date().toISOString(),
+          data_fields: [
+            { id: "event_name", name: "Event Name", type: "text" },
+            { id: "event_date", name: "Event Date", type: "date" },
+            { id: "location", name: "Location", type: "text" },
+            { id: "description", name: "Description", type: "textarea" },
+          ],
+        },
+        {
+          id: "template-2",
+          name: "Product Launch",
+          description: "Showcase new products with compelling visuals and key features",
+          thumbnail_url: "/product-launch-template.png",
+          status: "active",
+          created_at: new Date().toISOString(),
+          data_fields: [
+            { id: "product_name", name: "Product Name", type: "text" },
+            { id: "tagline", name: "Tagline", type: "text" },
+            { id: "price", name: "Price", type: "text" },
+            { id: "features", name: "Key Features", type: "textarea" },
+          ],
+        },
+        {
+          id: "template-3",
+          name: "Social Media Post",
+          description: "Engaging social media graphics with customizable text and branding",
+          thumbnail_url: "/social-media-template.png",
+          status: "active",
+          created_at: new Date().toISOString(),
+          data_fields: [
+            { id: "headline", name: "Headline", type: "text" },
+            { id: "subtext", name: "Subtext", type: "text" },
+            { id: "hashtags", name: "Hashtags", type: "text" },
+          ],
+        },
+        {
+          id: "template-4",
+          name: "Company Newsletter",
+          description: "Professional newsletter header with company branding and key messaging",
+          thumbnail_url: "/newsletter-template.png",
+          status: "active",
+          created_at: new Date().toISOString(),
+          data_fields: [
+            { id: "company_name", name: "Company Name", type: "text" },
+            { id: "newsletter_title", name: "Newsletter Title", type: "text" },
+            { id: "month_year", name: "Month/Year", type: "text" },
+            { id: "featured_story", name: "Featured Story", type: "textarea" },
+          ],
+        },
+      ]
+
+      setTemplates(mockTemplates)
     } catch (error) {
       console.error("Error fetching templates:", error)
     } finally {
@@ -120,7 +173,7 @@ export default function TemplateGrid({ organizationId, isAdmin }: TemplateGridPr
                 />
               ) : (
                 <div className="text-gray-400 text-center">
-                  <TemplateIcon className="h-12 w-12 mx-auto mb-2" /> {/* Use TemplateIcon instead of Template */}
+                  <TemplateIcon className="h-12 w-12 mx-auto mb-2" />
                   <p className="text-sm">No preview</p>
                 </div>
               )}

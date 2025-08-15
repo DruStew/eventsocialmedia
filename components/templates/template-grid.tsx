@@ -36,7 +36,6 @@ export default function TemplateGrid({ organizationId, isAdmin }: TemplateGridPr
       const { data, error } = await supabase
         .from("templates")
         .select("*")
-        .eq("organization_id", organizationId)
         .eq("status", "active")
         .order("created_at", { ascending: false })
 

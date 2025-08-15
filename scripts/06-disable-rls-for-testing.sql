@@ -1,6 +1,7 @@
--- Disable RLS for testing purposes
--- This allows direct access to tables without authentication
+-- Disable Row Level Security for testing core functionality
+-- This allows direct access to all tables without authentication
 
+-- Disable RLS on all tables
 ALTER TABLE organizations DISABLE ROW LEVEL SECURITY;
 ALTER TABLE profiles DISABLE ROW LEVEL SECURITY;
 ALTER TABLE templates DISABLE ROW LEVEL SECURITY;
@@ -14,26 +15,24 @@ VALUES ('test-org-001', 'Test Organization', 'test-org')
 ON CONFLICT (slug) DO NOTHING;
 
 -- Insert sample templates for testing
-INSERT INTO templates (id, name, description, svg_content, data_fields, status, organization_id, created_at)
-VALUES 
-  (
-    'template-001',
-    'Event Announcement',
-    'Perfect for announcing upcoming events with customizable text fields',
-    '<svg width="1080" height="1080" xmlns="http://www.w3.org/2000/svg"><rect width="1080" height="1080" fill="#3B82F6"/><text x="540" y="400" text-anchor="middle" fill="white" font-size="48" font-family="Arial">{{event_name}}</text><text x="540" y="500" text-anchor="middle" fill="white" font-size="32" font-family="Arial">{{date}}</text><text x="540" y="600" text-anchor="middle" fill="white" font-size="24" font-family="Arial">{{location}}</text></svg>',
-    '[{"id": "event_name", "label": "Event Name", "type": "text"}, {"id": "date", "label": "Date", "type": "text"}, {"id": "location", "label": "Location", "type": "text"}]'::jsonb,
-    'active',
-    'test-org-001',
-    NOW()
-  ),
-  (
-    'template-002', 
-    'Product Launch',
-    'Showcase new products with customizable product name and description',
-    '<svg width="1080" height="1080" xmlns="http://www.w3.org/2000/svg"><rect width="1080" height="1080" fill="#10B981"/><text x="540" y="400" text-anchor="middle" fill="white" font-size="52" font-family="Arial">{{product_name}}</text><text x="540" y="500" text-anchor="middle" fill="white" font-size="28" font-family="Arial">{{description}}</text><text x="540" y="650" text-anchor="middle" fill="white" font-size="36" font-family="Arial">{{price}}</text></svg>',
-    '[{"id": "product_name", "label": "Product Name", "type": "text"}, {"id": "description", "label": "Description", "type": "text"}, {"id": "price", "label": "Price", "type": "text"}]'::jsonb,
-    'active',
-    'test-org-001',
-    NOW()
-  )
-ON CONFLICT (id) DO NOTHING;
+INSERT INTO templates (id, name, description, svg_content, data_fields, status, organization_id) 
+VALUES (
+  'sample-template-001',
+  'Event Announcement',
+  'A template for announcing events with customizable text fields',
+  '<svg width="1080" height="1080" xmlns="http://www.w3.org/2000/svg"><rect width="1080" height="1080" fill="#3B82F6"/><text x="540" y="400" text-anchor="middle" fill="white" font-size="48" font-family="Arial">{{event_name}}</text><text x="540" y="500" text-anchor="middle" fill="white" font-size="32" font-family="Arial">{{date}}</text><text x="540" y="600" text-anchor="middle" fill="white" font-size="24" font-family="Arial">{{location}}</text></svg>',
+  '[{"id": "event_name", "label": "Event Name", "type": "text"}, {"id": "date", "label": "Date", "type": "text"}, {"id": "location", "label": "Location", "type": "text"}]'::jsonb,
+  'active',
+  'test-org-001'
+) ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO templates (id, name, description, svg_content, data_fields, status, organization_id) 
+VALUES (
+  'sample-template-002',
+  'Product Launch',
+  'A template for product launches with logo and description',
+  '<svg width="1080" height="1080" xmlns="http://www.w3.org/2000/svg"><rect width="1080" height="1080" fill="#10B981"/><text x="540" y="300" text-anchor="middle" fill="white" font-size="56" font-family="Arial">{{product_name}}</text><text x="540" y="500" text-anchor="middle" fill="white" font-size="28" font-family="Arial">{{tagline}}</text><text x="540" y="700" text-anchor="middle" fill="white" font-size="20" font-family="Arial">{{launch_date}}</text></svg>',
+  '[{"id": "product_name", "label": "Product Name", "type": "text"}, {"id": "tagline", "label": "Tagline", "type": "text"}, {"id": "launch_date", "label": "Launch Date", "type": "text"}]'::jsonb,
+  'active',
+  'test-org-001'
+) ON CONFLICT (id) DO NOTHING;
